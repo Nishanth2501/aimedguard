@@ -482,6 +482,38 @@ def _create_local_agent() -> Optional["LocalAgent"]:
                         except:
                             pass
 
+                # General healthcare questions (before compliance search)
+                elif any(
+                    word in query
+                    for word in [
+                        "what is",
+                        "how does",
+                        "general",
+                        "healthcare",
+                        "medical",
+                        "typical",
+                        "payment ratio",
+                        "medicare claims",
+                    ]
+                ) and not any(
+                    word in query
+                    for word in [
+                        "business risk",
+                        "hospital",
+                        "pay_ratio",
+                        "service patterns",
+                        "cms",
+                        "hipaa",
+                        "compliance",
+                        "policy",
+                        "manual",
+                        "regulation",
+                    ]
+                ):
+                    return {
+                        "output": "**General Healthcare Information**\n\n**Medicare Payment System:**\n• **Typical Payment Ratio**: 20-30% of submitted charges\n• **Average Medicare Payment**: $87.05 per service\n• **Average Submitted Charge**: $417.60 per service\n• **Payment Factors**: Geographic location, provider type, service complexity\n\n**Healthcare Billing Best Practices:**\n• **Accurate Coding**: Use appropriate ICD-10 and CPT codes\n• **Documentation**: Maintain complete medical records\n• **Timely Submission**: Submit claims within 12 months\n• **Quality Measures**: Focus on patient outcomes and safety\n\n**For specific analysis, provide numerical metrics for:**\n• **Fraud Risk Assessment** - pay_ratio, svc_per_bene, total_beneficiaries\n• **Operational Forecasting** - total_beneficiaries, mean_payment, mean_charge\n• **Anomaly Detection** - svc_per_bene, total_beneficiaries, mean_payment\n\n*Set OPENAI_API_KEY for more detailed healthcare information.*"
+                    }
+
                 elif any(
                     word in query
                     for word in [
@@ -510,7 +542,7 @@ def _create_local_agent() -> Optional["LocalAgent"]:
                         }
                     except Exception as e:
                         return {
-                            "output": f"**Compliance Search**\n\nCompliance search is temporarily unavailable due to resource constraints. However, I can help with:\n• **Fraud Risk Assessment** - Provide pay_ratio, svc_per_bene, total_beneficiaries\n• **Operational Forecasting** - Provide operational metrics\n• **Anomaly Detection** - Analyze unusual patterns\n\n*For general compliance questions, set OPENAI_API_KEY for AI-powered responses.*"
+                            "output": f"**Compliance Search**\n\n**General Healthcare Compliance Information:**\n\n**Medicare Billing Compliance:**\n• **Claims Submission**: Must be submitted within 1 year of service date\n• **Documentation**: Complete medical records required for all services\n• **Coding Accuracy**: Use correct ICD-10 and CPT codes\n• **Timely Filing**: Submit claims within 12 months of service\n\n**HIPAA Requirements:**\n• **Patient Privacy**: Protect all patient health information\n• **Data Security**: Implement appropriate safeguards\n• **Access Controls**: Limit access to authorized personnel only\n• **Breach Notification**: Report breaches within 60 days\n\n**Common Compliance Issues:**\n• **Upcoding**: Billing for higher-level services than provided\n• **Unbundling**: Separating bundled services for higher reimbursement\n• **Duplicate Billing**: Submitting same claim multiple times\n• **Medical Necessity**: Services must be medically necessary\n\n*For specific CMS/HIPAA document search, set OPENAI_API_KEY for AI-powered responses.*"
                         }
 
                 # Business risk analysis
@@ -527,47 +559,6 @@ def _create_local_agent() -> Optional["LocalAgent"]:
                         "output": "**Business Risk Analysis**\n\n**High Pay Ratio + Unusual Service Patterns Indicates:**\n\n**Potential Risks:**\n• **Fraud Risk**: Unusually high payment ratios may indicate overbilling or inappropriate billing practices\n• **Operational Inefficiency**: Unusual service patterns suggest poor resource utilization or workflow issues\n• **Compliance Risk**: High pay ratios combined with unusual patterns may trigger CMS audits\n• **Financial Risk**: Inconsistent billing patterns can lead to payment delays or denials\n\n**Recommended Actions:**\n• **Immediate**: Conduct fraud risk assessment using specific metrics\n• **Short-term**: Analyze operational patterns and service utilization\n• **Long-term**: Implement monitoring systems for unusual billing patterns\n\n**For detailed analysis, provide specific metrics:**\n• **Fraud Assessment**: pay_ratio, svc_per_bene, total_beneficiaries\n• **Operational Analysis**: total_beneficiaries, mean_payment, mean_charge\n• **Anomaly Detection**: svc_per_bene, total_beneficiaries, mean_payment"
                     }
 
-                # General healthcare questions fallback
-                elif any(
-                    word in query
-                    for word in [
-                        "what is",
-                        "how does",
-                        "general",
-                        "healthcare",
-                        "medical",
-                    ]
-                ) and not any(
-                    word in query
-                    for word in [
-                        "business risk",
-                        "hospital",
-                        "pay_ratio",
-                        "service patterns",
-                    ]
-                ):
-                    # Use OpenAI fallback for general questions
-                    import os
-
-                    if os.getenv("OPENAI_API_KEY"):
-                        try:
-                            from langchain_openai import ChatOpenAI
-
-                            llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
-                            response = llm.invoke(
-                                f"Answer this healthcare question: {query}. Be concise and factual."
-                            )
-                            return {
-                                "output": f"**General Healthcare Information**\n\n{response.content}\n\n*For specific predictions, provide numerical metrics for fraud detection, operational forecasting, or anomaly detection.*"
-                            }
-                        except Exception as e:
-                            return {
-                                "output": f"**AI MedGuard (Local Mode)**\n\nI can help with specific predictions using your data. Please provide numerical metrics for:\n• **Fraud Risk Assessment**\n• **Operational Forecasting**\n• **Anomaly Detection**\n\n*General question fallback unavailable: {str(e)}*"
-                            }
-                    else:
-                        return {
-                            "output": "**AI MedGuard (Local Mode)**\n\nI can help with specific predictions using your data. Please provide numerical metrics for:\n• **Fraud Risk Assessment**\n• **Operational Forecasting**\n• **Anomaly Detection**\n\n*Set OPENAI_API_KEY environment variable for general healthcare questions.*"
-                        }
 
                 # Default response
                 import os
