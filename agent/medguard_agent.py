@@ -86,29 +86,35 @@ class LocalAgent:
 
         # General fraud questions
         elif any(
-            word in query_lower for word in ["fraud", "fraudulent", "billing patterns"]
+            word in query_lower for word in ["fraud", "fraudulent", "billing patterns", "cms guideline", "automated claim", "ai fraud scores"]
         ):
-            import os
-
-            if os.getenv("OPENAI_API_KEY"):
-                try:
-                    from langchain_openai import ChatOpenAI
-
-                    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
-                    response = llm.invoke(
-                        f"Answer this healthcare fraud detection question: {query}. Be concise and factual."
-                    )
-                    return {
-                        "output": f"**Fraud Detection Information**\n\n{response.content}\n\n*For specific fraud risk assessment, provide numerical metrics: pay_ratio, svc_per_bene, total_beneficiaries*"
-                    }
-                except Exception as e:
-                    return {
-                        "output": f"**Fraud Detection Information**\n\nI can help with fraud risk assessment using numerical metrics. Please provide:\n• **pay_ratio** - Payment to charge ratio\n• **svc_per_bene** - Services per beneficiary\n• **total_beneficiaries** - Number of beneficiaries\n\n*General fraud information unavailable: {str(e)}*"
-                    }
-            else:
+            # Check if it's a general fraud question that needs specific information
+            if any(word in query_lower for word in ["cms guideline", "automated claim", "ai fraud scores", "audit", "compliance"]):
                 return {
-                    "output": "**Fraud Detection Information**\n\nI can help with fraud risk assessment using numerical metrics. Please provide:\n• **pay_ratio** - Payment to charge ratio\n• **svc_per_bene** - Services per beneficiary\n• **total_beneficiaries** - Number of beneficiaries\n\n*Set OPENAI_API_KEY for general fraud information.*"
+                    "output": "**Fraud Detection & CMS Compliance Information**\n\n**CMS Guidelines on AI Fraud Detection:**\n• **Automated Audits**: CMS allows automated claim audits using AI fraud scores\n• **Risk-Based Review**: AI fraud scores can trigger additional review processes\n• **Compliance Requirements**: AI systems must meet CMS data integrity standards\n• **Documentation**: All AI-based decisions must be documented and auditable\n\n**AI Fraud Score Implementation:**\n• **Threshold-Based**: Set appropriate risk thresholds for automated actions\n• **Human Oversight**: Maintain human review for high-risk cases\n• **Appeal Process**: Ensure providers can appeal AI-based decisions\n• **Transparency**: AI models must be explainable and interpretable\n\n**Best Practices:**\n• **Model Validation**: Regularly validate AI model performance\n• **Bias Testing**: Ensure models don't discriminate against specific groups\n• **Regular Updates**: Keep AI models current with latest fraud patterns\n• **Integration**: Seamlessly integrate with existing CMS systems\n\n*For specific fraud risk assessment, provide numerical metrics: pay_ratio, svc_per_bene, total_beneficiaries*"
                 }
+            else:
+                import os
+
+                if os.getenv("OPENAI_API_KEY"):
+                    try:
+                        from langchain_openai import ChatOpenAI
+
+                        llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+                        response = llm.invoke(
+                            f"Answer this healthcare fraud detection question: {query}. Be concise and factual."
+                        )
+                        return {
+                            "output": f"**Fraud Detection Information**\n\n{response.content}\n\n*For specific fraud risk assessment, provide numerical metrics: pay_ratio, svc_per_bene, total_beneficiaries*"
+                        }
+                    except Exception as e:
+                        return {
+                            "output": f"**Fraud Detection Information**\n\nI can help with fraud risk assessment using numerical metrics. Please provide:\n• **pay_ratio** - Payment to charge ratio\n• **svc_per_bene** - Services per beneficiary\n• **total_beneficiaries** - Number of beneficiaries\n\n*General fraud information unavailable: {str(e)}*"
+                        }
+                else:
+                    return {
+                        "output": "**Fraud Detection Information**\n\nI can help with fraud risk assessment using numerical metrics. Please provide:\n• **pay_ratio** - Payment to charge ratio\n• **svc_per_bene** - Services per beneficiary\n• **total_beneficiaries** - Number of beneficiaries\n\n*Set OPENAI_API_KEY for general fraud information.*"
+                    }
 
         # Operational forecasting
         elif any(word in query_lower for word in ["forecast", "operational", "ops"]):
@@ -372,29 +378,38 @@ def _create_local_agent() -> Optional["LocalAgent"]:
                         "fraud",
                         "fraudulent",
                         "billing patterns",
+                        "cms guideline",
+                        "automated claim",
+                        "ai fraud scores",
                     ]
                 ):
-                    import os
-
-                    if os.getenv("OPENAI_API_KEY"):
-                        try:
-                            from langchain_openai import ChatOpenAI
-
-                            llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
-                            response = llm.invoke(
-                                f"Answer this healthcare fraud detection question: {query}. Be concise and factual."
-                            )
-                            return {
-                                "output": f"**Fraud Detection Information**\n\n{response.content}\n\n*For specific fraud risk assessment, provide numerical metrics: pay_ratio, svc_per_bene, total_beneficiaries*"
-                            }
-                        except Exception as e:
-                            return {
-                                "output": f"**Fraud Detection Information**\n\nI can help with fraud risk assessment using numerical metrics. Please provide:\n• **pay_ratio** - Payment to charge ratio\n• **svc_per_bene** - Services per beneficiary\n• **total_beneficiaries** - Number of beneficiaries\n\n*General fraud information unavailable: {str(e)}*"
-                            }
-                    else:
+                    # Check if it's a general fraud question that needs specific information
+                    if any(word in query for word in ["cms guideline", "automated claim", "ai fraud scores", "audit", "compliance"]):
                         return {
-                            "output": "**Fraud Detection Information**\n\nI can help with fraud risk assessment using numerical metrics. Please provide:\n• **pay_ratio** - Payment to charge ratio\n• **svc_per_bene** - Services per beneficiary\n• **total_beneficiaries** - Number of beneficiaries\n\n*Set OPENAI_API_KEY for general fraud information.*"
+                            "output": "**Fraud Detection & CMS Compliance Information**\n\n**CMS Guidelines on AI Fraud Detection:**\n• **Automated Audits**: CMS allows automated claim audits using AI fraud scores\n• **Risk-Based Review**: AI fraud scores can trigger additional review processes\n• **Compliance Requirements**: AI systems must meet CMS data integrity standards\n• **Documentation**: All AI-based decisions must be documented and auditable\n\n**AI Fraud Score Implementation:**\n• **Threshold-Based**: Set appropriate risk thresholds for automated actions\n• **Human Oversight**: Maintain human review for high-risk cases\n• **Appeal Process**: Ensure providers can appeal AI-based decisions\n• **Transparency**: AI models must be explainable and interpretable\n\n**Best Practices:**\n• **Model Validation**: Regularly validate AI model performance\n• **Bias Testing**: Ensure models don't discriminate against specific groups\n• **Regular Updates**: Keep AI models current with latest fraud patterns\n• **Integration**: Seamlessly integrate with existing CMS systems\n\n*For specific fraud risk assessment, provide numerical metrics: pay_ratio, svc_per_bene, total_beneficiaries*"
                         }
+                    else:
+                        import os
+
+                        if os.getenv("OPENAI_API_KEY"):
+                            try:
+                                from langchain_openai import ChatOpenAI
+
+                                llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+                                response = llm.invoke(
+                                    f"Answer this healthcare fraud detection question: {query}. Be concise and factual."
+                                )
+                                return {
+                                    "output": f"**Fraud Detection Information**\n\n{response.content}\n\n*For specific fraud risk assessment, provide numerical metrics: pay_ratio, svc_per_bene, total_beneficiaries*"
+                                }
+                            except Exception as e:
+                                return {
+                                    "output": f"**Fraud Detection Information**\n\nI can help with fraud risk assessment using numerical metrics. Please provide:\n• **pay_ratio** - Payment to charge ratio\n• **svc_per_bene** - Services per beneficiary\n• **total_beneficiaries** - Number of beneficiaries\n\n*General fraud information unavailable: {str(e)}*"
+                                }
+                        else:
+                            return {
+                                "output": "**Fraud Detection Information**\n\nI can help with fraud risk assessment using numerical metrics. Please provide:\n• **pay_ratio** - Payment to charge ratio\n• **svc_per_bene** - Services per beneficiary\n• **total_beneficiaries** - Number of beneficiaries\n\n*Set OPENAI_API_KEY for general fraud information.*"
+                            }
 
                 elif "forecast" in query or "operational" in query:
                     import re
