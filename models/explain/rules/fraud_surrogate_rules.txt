@@ -1,0 +1,19 @@
+|--- total_services <= 19449.50
+|   |--- mean_allowed <= 1.18
+|   |   |--- value: [0.97]
+|   |--- mean_allowed >  1.18
+|   |   |--- svc_per_bene <= 157.14
+|   |   |   |--- value: [0.00]
+|   |   |--- svc_per_bene >  157.14
+|   |   |   |--- value: [0.97]
+|--- total_services >  19449.50
+|   |--- pay_ratio <= 0.10
+|   |   |--- total_services <= 103527.50
+|   |   |   |--- value: [0.99]
+|   |   |--- total_services >  103527.50
+|   |   |   |--- value: [0.96]
+|   |--- pay_ratio >  0.10
+|   |   |--- pay_ratio <= 0.11
+|   |   |   |--- value: [0.04]
+|   |   |--- pay_ratio >  0.11
+|   |   |   |--- value: [0.00]

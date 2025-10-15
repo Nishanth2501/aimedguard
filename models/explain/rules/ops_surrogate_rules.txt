@@ -1,0 +1,22 @@
+|--- allow_ratio <= 0.52
+|   |--- allow_ratio <= 0.30
+|   |   |--- allow_ratio <= 0.18
+|   |   |   |--- value: [0.09]
+|   |   |--- allow_ratio >  0.18
+|   |   |   |--- value: [0.18]
+|   |--- allow_ratio >  0.30
+|   |   |--- allow_ratio <= 0.40
+|   |   |   |--- value: [0.27]
+|   |   |--- allow_ratio >  0.40
+|   |   |   |--- value: [0.35]
+|--- allow_ratio >  0.52
+|   |--- allow_ratio <= 0.81
+|   |   |--- allow_ratio <= 0.64
+|   |   |   |--- value: [0.44]
+|   |   |--- allow_ratio >  0.64
+|   |   |   |--- value: [0.54]
+|   |--- allow_ratio >  0.81
+|   |   |--- distinct_hcpcs <= 4.50
+|   |   |   |--- value: [0.69]
+|   |   |--- distinct_hcpcs >  4.50
+|   |   |   |--- value: [0.85]

@@ -1,0 +1,138 @@
+
+====================================================================================================
+  AI MEDGUARD - RAW VS PROCESSED DATA COMPARISON
+====================================================================================================
+
+Date: 2025-10-11 12:22:58
+Sampling: 10,000 rows per dataset for comparison
+
+
+====================================================================================================
+  CLAIMS DATA COMPARISON
+====================================================================================================
+
+📊 Loading raw data from MUP_PHY_R25_P05_V20_D23_Prov_Svc.csv...
+📊 Loading processed data from claims.parquet...
+
+>>> Shape Comparison
+  Raw:           10,000 rows ×  28 columns
+  Processed:     10,000 rows ×  18 columns
+
+>>> Column Names
+  Raw columns (28):
+    Rndrng_NPI, Rndrng_Prvdr_Last_Org_Name, Rndrng_Prvdr_First_Name, Rndrng_Prvdr_MI, Rndrng_Prvdr_Crdntls...
+  Processed columns (18):
+    npi, state, zip5, provider_type, credentials...
+
+>>> Data Types
+  Raw data types:
+    {dtype('O'): 18, dtype('float64'): 6, dtype('int64'): 4}
+  Processed data types:
+    {string[python]: 10, Int64Dtype(): 4, dtype('float64'): 4}
+
+>>> Missing Values
+  Raw:           10,940 missing values (3.91%)
+  Processed:      1,122 missing values (0.62%)
+
+>>> Memory Usage
+  Raw:            11.15 MB
+  Processed:       7.24 MB
+  Savings:         35.1% (Parquet compression)
+
+>>> Sample Data Quality Checks
+  'Not Available' strings in raw data: 0
+  'Not Available' strings in processed: 0 (converted to null)
+
+====================================================================================================
+
+====================================================================================================
+  STATE COMPLICATIONS DATA COMPARISON
+====================================================================================================
+
+📊 Loading raw data from Complications_and_Deaths-State.csv...
+📊 Loading processed data from ops_state_complications.parquet...
+
+>>> Shape Comparison
+  Raw:            1,120 rows ×  10 columns
+  Processed:      1,120 rows ×  13 columns
+
+>>> Column Names
+  Raw columns (10):
+    State, Measure ID, Measure Name, Number of Hospitals Worse, Number of Hospitals Same...
+  Processed columns (13):
+    state, measure_id, measure_name, n_worse, n_same...
+
+>>> Data Types
+  Raw data types:
+    {dtype('O'): 9, dtype('float64'): 1}
+  Processed data types:
+    {string[python]: 6, Int64Dtype(): 4, dtype('<M8[ns]'): 2, dtype('O'): 1}
+
+>>> Missing Values
+  Raw:            1,040 missing values (9.29%)
+  Processed:      1,412 missing values (9.70%)
+
+>>> Memory Usage
+  Raw:             0.57 MB
+  Processed:       0.51 MB
+  Savings:          9.5% (Parquet compression)
+
+>>> Sample Data Quality Checks
+  'Not Available' strings in raw data: 372
+  'Not Available' strings in processed: 0 (converted to null)
+
+====================================================================================================
+
+====================================================================================================
+  TIMELY & EFFECTIVE CARE DATA COMPARISON
+====================================================================================================
+
+📊 Loading raw data from Timely_and_Effective_Care-Hospital.csv...
+📊 Loading processed data from ops_timely_effective.parquet...
+
+>>> Shape Comparison
+  Raw:           10,000 rows ×  16 columns
+  Processed:     10,000 rows ×  21 columns
+
+>>> Column Names
+  Raw columns (16):
+    Facility ID, Facility Name, Address, City/Town, State...
+  Processed columns (21):
+    facility_id, facility_name, Address, city, state...
+
+>>> Data Types
+  Raw data types:
+    {dtype('O'): 15, dtype('int64'): 1}
+  Processed data types:
+    {string[python]: 16, dtype('<M8[ns]'): 2, Float64Dtype(): 1, Int64Dtype(): 1, dtype('O'): 1}
+
+>>> Missing Values
+  Raw:            4,207 missing values (2.63%)
+  Processed:     26,168 missing values (12.46%)
+
+>>> Memory Usage
+  Raw:             9.07 MB
+  Processed:      10.44 MB
+  Savings:        -15.2% (Parquet compression)
+
+>>> Sample Data Quality Checks
+  'Not Available' strings in raw data: 0
+  'Not Available' strings in processed: 0 (converted to null)
+
+====================================================================================================
+
+====================================================================================================
+  SUMMARY OF ETL TRANSFORMATIONS
+====================================================================================================
+
+  ✅ Column Renaming: CMS abbreviations → readable names
+  ✅ Data Type Conversion: Strings → proper numeric/boolean types
+  ✅ Null Handling: "Not Available" strings → proper nulls
+  ✅ Date Parsing: String dates → datetime objects
+  ✅ Data Validation: Schema validation with Pandera
+  ✅ Format Optimization: CSV → Parquet (better compression)
+  ✅ Data Cleaning: Standardized text, trimmed whitespace
+  ✅ Feature Engineering: Added period_key, parsed mixed columns
+    
+====================================================================================================
+

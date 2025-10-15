@@ -1,0 +1,750 @@
+
+====================================================================================================
+  AI MEDGUARD - INITIAL EXPLORATORY DATA ANALYSIS (EDA)
+====================================================================================================
+
+Sample size for large files: 1,000 rows
+Date: 2025-10-11 11:46:49
+
+
+====================================================================================================
+  PART 1: CLAIMS DATA ANALYSIS
+====================================================================================================
+
+
+🔄 Loading data/raw/claims/MUP_PHY_R25_P05_V20_D23_Prov_Svc.csv...
+
+====================================================================================================
+  ANALYZING: Medicare Physician Services Claims
+====================================================================================================
+
+📊 NOTE: Analyzing first 1000 rows (sample)
+
+
+>>> 1. Dataset Shape
+
+Rows: 1,000
+Columns: 28
+
+>>> 2. Column Names and Data Types
+
+                  Column Name Data Type  Non-Null Count  Null Count  Null %
+                   Rndrng_NPI     int64            1000           0     0.0
+   Rndrng_Prvdr_Last_Org_Name    object            1000           0     0.0
+      Rndrng_Prvdr_First_Name    object             957          43     4.3
+              Rndrng_Prvdr_MI    object             654         346    34.6
+         Rndrng_Prvdr_Crdntls    object             944          56     5.6
+          Rndrng_Prvdr_Ent_Cd    object            1000           0     0.0
+             Rndrng_Prvdr_St1    object            1000           0     0.0
+             Rndrng_Prvdr_St2    object             308         692    69.2
+            Rndrng_Prvdr_City    object            1000           0     0.0
+    Rndrng_Prvdr_State_Abrvtn    object            1000           0     0.0
+      Rndrng_Prvdr_State_FIPS     int64            1000           0     0.0
+            Rndrng_Prvdr_Zip5     int64            1000           0     0.0
+            Rndrng_Prvdr_RUCA   float64            1000           0     0.0
+       Rndrng_Prvdr_RUCA_Desc    object            1000           0     0.0
+           Rndrng_Prvdr_Cntry    object            1000           0     0.0
+            Rndrng_Prvdr_Type    object            1000           0     0.0
+Rndrng_Prvdr_Mdcr_Prtcptg_Ind    object            1000           0     0.0
+                     HCPCS_Cd    object            1000           0     0.0
+                   HCPCS_Desc    object            1000           0     0.0
+               HCPCS_Drug_Ind    object            1000           0     0.0
+                Place_Of_Srvc    object            1000           0     0.0
+                    Tot_Benes     int64            1000           0     0.0
+                    Tot_Srvcs   float64            1000           0     0.0
+           Tot_Bene_Day_Srvcs     int64            1000           0     0.0
+               Avg_Sbmtd_Chrg   float64            1000           0     0.0
+           Avg_Mdcr_Alowd_Amt   float64            1000           0     0.0
+            Avg_Mdcr_Pymt_Amt   float64            1000           0     0.0
+           Avg_Mdcr_Stdzd_Amt   float64            1000           0     0.0
+
+>>> 3. Missing Values Analysis
+
+⚠️  Columns with missing values:
+                 Column  Missing Count  Missing %
+       Rndrng_Prvdr_St2            692       69.2
+        Rndrng_Prvdr_MI            346       34.6
+   Rndrng_Prvdr_Crdntls             56        5.6
+Rndrng_Prvdr_First_Name             43        4.3
+
+>>> 4. Numeric Columns - Descriptive Statistics
+
+Found 11 numeric columns:
+
+Showing first 10 of 11 numeric columns:
+
+         Rndrng_NPI  Rndrng_Prvdr_State_FIPS  Rndrng_Prvdr_Zip5  Rndrng_Prvdr_RUCA    Tot_Benes     Tot_Srvcs  Tot_Bene_Day_Srvcs  Avg_Sbmtd_Chrg  Avg_Mdcr_Alowd_Amt  Avg_Mdcr_Pymt_Amt
+count  1.000000e+03              1000.000000        1000.000000        1000.000000  1000.000000   1000.000000         1000.000000     1000.000000         1000.000000        1000.000000
+mean   1.003004e+09                29.690000       51047.726000           1.481600    70.288000    223.864200          115.113000      417.595329          111.361222          87.051670
+std    2.673880e+03                16.088777       29411.064437           1.349163   164.907069   1323.922406          294.941392      964.432572          158.819588         126.598280
+min    1.003000e+09                 1.000000         725.000000           1.000000    11.000000     11.000000           11.000000        0.495645            0.094500           0.075441
+25%    1.003002e+09                16.000000       23462.000000           1.000000    17.000000     20.000000           20.000000       68.625000           29.744113          24.394960
+50%    1.003003e+09                34.000000       51027.000000           1.000000    31.000000     42.000000           39.000000      179.596154           76.029582          59.701169
+75%    1.003007e+09                42.000000       77375.000000           1.000000    69.250000    109.250000           92.000000      381.125000          133.670380         103.933340
+max    1.003009e+09                72.000000       98104.000000          10.000000  3106.000000  34752.200000         4577.000000    18000.000000         1646.390000        1311.755000
+
+🔍 Checking for potential issues in numeric columns:
+  ⚠️  Rndrng_NPI: Very large values detected (max=1.00e+09)
+
+>>> 5. Categorical Columns - Value Distributions
+
+Found 17 categorical columns:
+
+
+  Column: Rndrng_Prvdr_Last_Org_Name
+  Unique values: 112
+  Top 5 most frequent values:
+    - Owens: 52 (5.2%)
+    - Yamani: 33 (3.3%)
+    - Hartman: 32 (3.2%)
+    - Ozuna: 30 (3.0%)
+    - Danciu: 28 (2.8%)
+
+  Column: Rndrng_Prvdr_First_Name
+  Unique values: 94
+  Top 5 most frequent values:
+    - Justin: 52 (5.2%)
+    - Matthew: 35 (3.5%)
+    - Hussein: 33 (3.3%)
+    - Eduardo: 30 (3.0%)
+    - Sorin: 28 (2.8%)
+
+  Column: Rndrng_Prvdr_MI
+  Unique values: 20
+  Value distribution:
+    - M: 133 (13.3%)
+    - C: 76 (7.6%)
+    - S: 69 (6.9%)
+    - R: 66 (6.6%)
+    - A: 58 (5.8%)
+    - K: 41 (4.1%)
+    - N: 35 (3.5%)
+    - T: 25 (2.5%)
+    - E: 25 (2.5%)
+    - Y: 24 (2.4%)
+
+  Column: Rndrng_Prvdr_Crdntls
+  Unique values: 33
+  Top 5 most frequent values:
+    - M.D.: 479 (47.9%)
+    - MD: 240 (24.0%)
+    - PA-C: 40 (4.0%)
+    - DO: 30 (3.0%)
+    - D.O.: 27 (2.7%)
+
+  Column: Rndrng_Prvdr_Ent_Cd
+  Unique values: 2
+  Value distribution:
+    - I: 957 (95.7%)
+    - O: 43 (4.3%)
+
+>>> 6. Duplicate Records Check
+
+Total duplicate rows: 0
+✅ No duplicate rows found!
+
+>>> 7. Sample Records (First 5 Rows)
+
+   Rndrng_NPI Rndrng_Prvdr_Last_Org_Name Rndrng_Prvdr_First_Name Rndrng_Prvdr_MI Rndrng_Prvdr_Crdntls Rndrng_Prvdr_Ent_Cd           Rndrng_Prvdr_St1 Rndrng_Prvdr_St2 Rndrng_Prvdr_City Rndrng_Prvdr_State_Abrvtn  Rndrng_Prvdr_State_FIPS  Rndrng_Prvdr_Zip5  Rndrng_Prvdr_RUCA                                                               Rndrng_Prvdr_RUCA_Desc Rndrng_Prvdr_Cntry Rndrng_Prvdr_Type Rndrng_Prvdr_Mdcr_Prtcptg_Ind HCPCS_Cd                                                                                                                          HCPCS_Desc HCPCS_Drug_Ind Place_Of_Srvc  Tot_Benes  Tot_Srvcs  Tot_Bene_Day_Srvcs  Avg_Sbmtd_Chrg  Avg_Mdcr_Alowd_Amt  Avg_Mdcr_Pymt_Amt  Avg_Mdcr_Stdzd_Amt
+0  1003000126                  Enkeshafi                 Ardalan             NaN                 M.D.                   I  6410 Rockledge Dr Ste 304              NaN          Bethesda                        MD                       24              20817                1.0  Metropolitan area core: primary flow within an urbanized area of 50,000 and greater                 US       Hospitalist                             Y    99221     Initial hospital care with straightforward or low level of medical decision making, per day, if using time, at least 40 minutes              N             F         12       12.0                  12      250.226667           89.062500          60.312500           54.669167
+1  1003000126                  Enkeshafi                 Ardalan             NaN                 M.D.                   I  6410 Rockledge Dr Ste 304              NaN          Bethesda                        MD                       24              20817                1.0  Metropolitan area core: primary flow within an urbanized area of 50,000 and greater                 US       Hospitalist                             Y    99222                 Initial hospital care with straightforward or low-level medical decision making, if using time, at least 55 minutes              N             F         22       22.0                  22      318.581818          130.312727          99.380000           98.429545
+2  1003000126                  Enkeshafi                 Ardalan             NaN                 M.D.                   I  6410 Rockledge Dr Ste 304              NaN          Bethesda                        MD                       24              20817                1.0  Metropolitan area core: primary flow within an urbanized area of 50,000 and greater                 US       Hospitalist                             Y    99231  Subsequent hospital care with straightforward or low level of medical decision making, per day, if using time, at least 25 minutes              N             F         76      127.0                 127       95.732283           54.820157          43.557323           38.748661
+3  1003000126                  Enkeshafi                 Ardalan             NaN                 M.D.                   I  6410 Rockledge Dr Ste 304              NaN          Bethesda                        MD                       24              20817                1.0  Metropolitan area core: primary flow within an urbanized area of 50,000 and greater                 US       Hospitalist                             Y    99232                          Subsequent hospital care with moderate levelof medical decision making, if using time, at least 35 minutes              N             F        180      341.0                 341      194.441525           86.840762          69.086422           61.812258
+4  1003000126                  Enkeshafi                 Ardalan             NaN                 M.D.                   I  6410 Rockledge Dr Ste 304              NaN          Bethesda                        MD                       24              20817                1.0  Metropolitan area core: primary flow within an urbanized area of 50,000 and greater                 US       Hospitalist                             Y    99233                          Subsequent hospital care with moderate levelof medical decision making, if using time, at least 50 minutes              N             F         53       79.0                  79      251.454051          127.915190         100.943165           92.409114
+
+====================================================================================================
+
+
+====================================================================================================
+  PART 2: OPERATIONAL DATA ANALYSIS
+====================================================================================================
+
+
+🔄 Loading data/raw/operational/Complications_and_Deaths-State.csv...
+
+====================================================================================================
+  ANALYZING: State-Level Complications and Deaths
+====================================================================================================
+
+📊 Analyzing full dataset
+
+
+>>> 1. Dataset Shape
+
+Rows: 1,120
+Columns: 10
+
+>>> 2. Column Names and Data Types
+
+                Column Name Data Type  Non-Null Count  Null Count  Null %
+                      State    object            1120           0    0.00
+                 Measure ID    object            1120           0    0.00
+               Measure Name    object            1120           0    0.00
+  Number of Hospitals Worse    object            1120           0    0.00
+   Number of Hospitals Same    object            1120           0    0.00
+ Number of Hospitals Better    object            1120           0    0.00
+Number of Hospitals Too Few    object            1120           0    0.00
+                   Footnote   float64              80        1040   92.86
+                 Start Date    object            1120           0    0.00
+                   End Date    object            1120           0    0.00
+
+>>> 3. Missing Values Analysis
+
+⚠️  Columns with missing values:
+  Column  Missing Count  Missing %
+Footnote           1040      92.86
+
+>>> 4. Numeric Columns - Descriptive Statistics
+
+Found 1 numeric columns:
+
+       Footnote
+count      80.0
+mean        5.0
+std         0.0
+min         5.0
+25%         5.0
+50%         5.0
+75%         5.0
+max         5.0
+
+🔍 Checking for potential issues in numeric columns:
+
+>>> 5. Categorical Columns - Value Distributions
+
+Found 9 categorical columns:
+
+
+  Column: State
+  Unique values: 56
+  Top 5 most frequent values:
+    - AK: 20 (1.8%)
+    - AL: 20 (1.8%)
+    - NC: 20 (1.8%)
+    - ND: 20 (1.8%)
+    - NE: 20 (1.8%)
+
+  Column: Measure ID
+  Unique values: 20
+  Value distribution:
+    - COMP_HIP_KNEE: 56 (5.0%)
+    - Hybrid_HWM: 56 (5.0%)
+    - PSI_15: 56 (5.0%)
+    - PSI_14: 56 (5.0%)
+    - PSI_13: 56 (5.0%)
+    - PSI_12: 56 (5.0%)
+    - PSI_11: 56 (5.0%)
+    - PSI_10: 56 (5.0%)
+    - PSI_09: 56 (5.0%)
+    - PSI_08: 56 (5.0%)
+
+  Column: Measure Name
+  Unique values: 20
+  Value distribution:
+    - Rate of complications for hip/knee replacement patients: 56 (5.0%)
+    - Hybrid Hospital-Wide All-Cause Risk Standardized Mortality Rate: 56 (5.0%)
+    - Abdominopelvic accidental puncture or laceration rate: 56 (5.0%)
+    - Postoperative wound dehiscence rate: 56 (5.0%)
+    - Postoperative sepsis rate: 56 (5.0%)
+    - Perioperative pulmonary embolism or deep vein thrombosis rate: 56 (5.0%)
+    - Postoperative respiratory failure rate: 56 (5.0%)
+    - Postoperative acute kidney injury requiring dialysis rate: 56 (5.0%)
+    - Postoperative hemorrhage or hematoma rate: 56 (5.0%)
+    - In-hospital fall-associated fracture rate: 56 (5.0%)
+
+  Column: Number of Hospitals Worse
+  Unique values: 19
+  Value distribution:
+    - 0: 561 (50.1%)
+    - 1: 224 (20.0%)
+    - 2: 83 (7.4%)
+    - Not Available: 80 (7.1%)
+    - 3: 51 (4.6%)
+    - 4: 42 (3.8%)
+    - 5: 20 (1.8%)
+    - 6: 14 (1.2%)
+    - 8: 12 (1.1%)
+    - 7: 11 (1.0%)
+
+  Column: Number of Hospitals Same
+  Unique values: 178
+  Top 5 most frequent values:
+    - Not Available: 80 (7.1%)
+    - 6: 36 (3.2%)
+    - 7: 32 (2.9%)
+    - 11: 29 (2.6%)
+    - 12: 28 (2.5%)
+
+>>> 6. Duplicate Records Check
+
+Total duplicate rows: 0
+✅ No duplicate rows found!
+
+>>> 7. Sample Records (First 5 Rows)
+
+  State     Measure ID                                                     Measure Name Number of Hospitals Worse Number of Hospitals Same Number of Hospitals Better Number of Hospitals Too Few  Footnote  Start Date    End Date
+0    AK  COMP_HIP_KNEE          Rate of complications for hip/knee replacement patients                         0                        7                          0                           3       NaN  04/01/2021  03/31/2024
+1    AK     Hybrid_HWM  Hybrid Hospital-Wide All-Cause Risk Standardized Mortality Rate                         0                       17                          0                           4       NaN  07/01/2023  06/30/2024
+2    AK    MORT_30_AMI                             Death rate for heart attack patients                         0                        5                          0                           9       NaN  07/01/2021  06/30/2024
+3    AK   MORT_30_CABG                             Death rate for CABG surgery patients                         0                        2                          0                           1       NaN  07/01/2021  06/30/2024
+4    AK   MORT_30_COPD                                     Death rate for COPD patients                         1                        9                          0                          10       NaN  07/01/2021  06/30/2024
+
+====================================================================================================
+
+
+🔄 Loading data/raw/operational/Timely_and_Effective_Care-Hospital.csv...
+
+====================================================================================================
+  ANALYZING: Hospital Timely and Effective Care Measures
+====================================================================================================
+
+📊 NOTE: Analyzing first 1000 rows (sample)
+
+
+>>> 1. Dataset Shape
+
+Rows: 1,000
+Columns: 16
+
+>>> 2. Column Names and Data Types
+
+     Column Name Data Type  Non-Null Count  Null Count  Null %
+     Facility ID     int64            1000           0     0.0
+   Facility Name    object            1000           0     0.0
+         Address    object            1000           0     0.0
+       City/Town    object            1000           0     0.0
+           State    object            1000           0     0.0
+        ZIP Code     int64            1000           0     0.0
+   County/Parish    object            1000           0     0.0
+Telephone Number    object            1000           0     0.0
+       Condition    object            1000           0     0.0
+      Measure ID    object            1000           0     0.0
+    Measure Name    object            1000           0     0.0
+           Score    object            1000           0     0.0
+          Sample    object             961          39     3.9
+        Footnote    object             565         435    43.5
+      Start Date    object            1000           0     0.0
+        End Date    object            1000           0     0.0
+
+>>> 3. Missing Values Analysis
+
+⚠️  Columns with missing values:
+  Column  Missing Count  Missing %
+Footnote            435       43.5
+  Sample             39        3.9
+
+>>> 4. Numeric Columns - Descriptive Statistics
+
+Found 2 numeric columns:
+
+        Facility ID      ZIP Code
+count   1000.000000   1000.000000
+mean   10038.850000  35863.522000
+std       23.123542    498.881533
+min    10001.000000  35007.000000
+25%    10019.000000  35555.000000
+50%    10039.000000  35903.000000
+75%    10056.000000  36301.000000
+max    10085.000000  36853.000000
+
+🔍 Checking for potential issues in numeric columns:
+
+>>> 5. Categorical Columns - Value Distributions
+
+Found 14 categorical columns:
+
+
+  Column: Facility Name
+  Unique values: 39
+  Top 5 most frequent values:
+    - SOUTHEAST HEALTH MEDICAL CENTER: 26 (2.6%)
+    - BIBB MEDICAL CENTER: 26 (2.6%)
+    - FAYETTE MEDICAL CENTER: 26 (2.6%)
+    - RIVERVIEW REGIONAL MEDICAL CENTER: 26 (2.6%)
+    - MEDICAL CENTER ENTERPRISE: 26 (2.6%)
+
+  Column: Address
+  Unique values: 39
+  Top 5 most frequent values:
+    - 1108 ROSS CLARK CIRCLE: 26 (2.6%)
+    - 208 PIERSON AVE: 26 (2.6%)
+    - 1653 TEMPLE AVENUE NORTH: 26 (2.6%)
+    - 600 SOUTH THIRD STREET: 26 (2.6%)
+    - 400 N EDWARDS STREET: 26 (2.6%)
+
+  Column: City/Town
+  Unique values: 33
+  Top 5 most frequent values:
+    - BIRMINGHAM: 104 (10.4%)
+    - DOTHAN: 52 (5.2%)
+    - MONTGOMERY: 52 (5.2%)
+    - GADSDEN: 52 (5.2%)
+    - ANNISTON: 26 (2.6%)
+
+  Column: State
+  Unique values: 1
+  Value distribution:
+    - AL: 1,000 (100.0%)
+
+  Column: County/Parish
+  Unique values: 31
+  Top 5 most frequent values:
+    - JEFFERSON: 104 (10.4%)
+    - HOUSTON: 52 (5.2%)
+    - TALLAPOOSA: 52 (5.2%)
+    - MONTGOMERY: 52 (5.2%)
+    - ETOWAH: 52 (5.2%)
+
+>>> 6. Duplicate Records Check
+
+Total duplicate rows: 0
+✅ No duplicate rows found!
+
+>>> 7. Sample Records (First 5 Rows)
+
+   Facility ID                    Facility Name                 Address City/Town State  ZIP Code County/Parish Telephone Number                            Condition     Measure ID                                                                                              Measure Name          Score         Sample Footnote  Start Date    End Date
+0        10001  SOUTHEAST HEALTH MEDICAL CENTER  1108 ROSS CLARK CIRCLE    DOTHAN    AL     36301       HOUSTON   (334) 793-8701                 Emergency Department            EDV                                                                               Emergency department volume           high            NaN      NaN  01/01/2023  12/31/2023
+1        10001  SOUTHEAST HEALTH MEDICAL CENTER  1108 ROSS CLARK CIRCLE    DOTHAN    AL     36301       HOUSTON   (334) 793-8701  Electronic Clinical Quality Measure  ED_2_Strata_1  Admit Decision Time to ED Departure Time for Admitted Patients - non psychiatric/mental health disorders  Not Available  Not Available        5  01/01/2023  12/31/2023
+2        10001  SOUTHEAST HEALTH MEDICAL CENTER  1108 ROSS CLARK CIRCLE    DOTHAN    AL     36301       HOUSTON   (334) 793-8701  Electronic Clinical Quality Measure  ED_2_Strata_2      Admit Decision Time to ED Departure Time for Admitted Patients - psychiatric/mental health disorders  Not Available  Not Available        5  01/01/2023  12/31/2023
+3        10001  SOUTHEAST HEALTH MEDICAL CENTER  1108 ROSS CLARK CIRCLE    DOTHAN    AL     36301       HOUSTON   (334) 793-8701     Healthcare Personnel Vaccination   HCP_COVID_19                          Percentage of healthcare personnel who are up to date with COVID-19 vaccinations            0.3           3077      NaN  07/01/2024  09/30/2024
+4        10001  SOUTHEAST HEALTH MEDICAL CENTER  1108 ROSS CLARK CIRCLE    DOTHAN    AL     36301       HOUSTON   (334) 793-8701  Electronic Clinical Quality Measure          HH_01                                                                       Hospital Harm - Severe Hypoglycemia  Not Available  Not Available        5  01/01/2023  12/31/2023
+
+====================================================================================================
+
+
+🔄 Loading data/raw/operational/Hospital_General_Information.csv...
+
+====================================================================================================
+  ANALYZING: Hospital General Information
+====================================================================================================
+
+📊 Analyzing full dataset
+
+
+>>> 1. Dataset Shape
+
+Rows: 5,381
+Columns: 38
+
+>>> 2. Column Names and Data Types
+
+                                     Column Name Data Type  Non-Null Count  Null Count  Null %
+                                     Facility ID    object            5381           0    0.00
+                                   Facility Name    object            5381           0    0.00
+                                         Address    object            5381           0    0.00
+                                       City/Town    object            5381           0    0.00
+                                           State    object            5381           0    0.00
+                                        ZIP Code     int64            5381           0    0.00
+                                   County/Parish    object            5381           0    0.00
+                                Telephone Number    object            5381           0    0.00
+                                   Hospital Type    object            5381           0    0.00
+                              Hospital Ownership    object            5381           0    0.00
+                              Emergency Services    object            5381           0    0.00
+Meets criteria for birthing friendly designation    object            2228        3153   58.60
+                         Hospital overall rating    object            5381           0    0.00
+                Hospital overall rating footnote   float64            2521        2860   53.15
+                        MORT Group Measure Count    object            5381           0    0.00
+                 Count of Facility MORT Measures    object            5381           0    0.00
+                   Count of MORT Measures Better    object            5381           0    0.00
+             Count of MORT Measures No Different    object            5381           0    0.00
+                    Count of MORT Measures Worse    object            5381           0    0.00
+                             MORT Group Footnote   float64            1727        3654   67.91
+                      Safety Group Measure Count    object            5381           0    0.00
+               Count of Facility Safety Measures    object            5381           0    0.00
+                 Count of Safety Measures Better    object            5381           0    0.00
+           Count of Safety Measures No Different    object            5381           0    0.00
+                  Count of Safety Measures Worse    object            5381           0    0.00
+                           Safety Group Footnote   float64            2023        3358   62.40
+                       READM Group Measure Count    object            5381           0    0.00
+                Count of Facility READM Measures    object            5381           0    0.00
+                  Count of READM Measures Better    object            5381           0    0.00
+            Count of READM Measures No Different    object            5381           0    0.00
+                   Count of READM Measures Worse    object            5381           0    0.00
+                            READM Group Footnote   float64            1098        4283   79.59
+                      Pt Exp Group Measure Count    object            5381           0    0.00
+               Count of Facility Pt Exp Measures    object            5381           0    0.00
+                           Pt Exp Group Footnote   float64            2223        3158   58.69
+                          TE Group Measure Count    object            5381           0    0.00
+                   Count of Facility TE Measures    object            5381           0    0.00
+                               TE Group Footnote   float64             876        4505   83.72
+
+>>> 3. Missing Values Analysis
+
+⚠️  Columns with missing values:
+                                          Column  Missing Count  Missing %
+                               TE Group Footnote           4505      83.72
+                            READM Group Footnote           4283      79.59
+                             MORT Group Footnote           3654      67.91
+                           Safety Group Footnote           3358      62.40
+                           Pt Exp Group Footnote           3158      58.69
+Meets criteria for birthing friendly designation           3153      58.60
+                Hospital overall rating footnote           2860      53.15
+
+>>> 4. Numeric Columns - Descriptive Statistics
+
+Found 7 numeric columns:
+
+           ZIP Code  Hospital overall rating footnote  MORT Group Footnote  Safety Group Footnote  READM Group Footnote  Pt Exp Group Footnote  TE Group Footnote
+count   5381.000000                       2521.000000          1727.000000            2023.000000           1098.000000            2223.000000         876.000000
+mean   53759.512544                         16.870686            11.486393              10.581809             15.185792              10.031039          17.767123
+std    27105.232517                          1.976232             7.053488               6.930566              6.354041               6.773328           4.198026
+min      603.000000                          5.000000             5.000000               5.000000              5.000000               5.000000           5.000000
+25%    32608.000000                         16.000000             5.000000               5.000000              5.000000               5.000000          19.000000
+50%    55041.000000                         16.000000             5.000000               5.000000             19.000000               5.000000          19.000000
+75%    76110.000000                         19.000000            19.000000              19.000000             19.000000              19.000000          19.000000
+max    99929.000000                         23.000000            23.000000              23.000000             22.000000              22.000000          22.000000
+
+🔍 Checking for potential issues in numeric columns:
+
+>>> 5. Categorical Columns - Value Distributions
+
+Found 31 categorical columns:
+
+
+  Column: Facility ID
+  Unique values: 5381
+  Top 5 most frequent values:
+    - 010001: 1 (0.0%)
+    - 360086: 1 (0.0%)
+    - 360098: 1 (0.0%)
+    - 360096: 1 (0.0%)
+    - 360095: 1 (0.0%)
+
+  Column: Facility Name
+  Unique values: 5253
+  Top 5 most frequent values:
+    - MEMORIAL HOSPITAL: 12 (0.2%)
+    - COMMUNITY MEMORIAL HOSPITAL: 5 (0.1%)
+    - ST LUKES HOSPITAL: 4 (0.1%)
+    - MEMORIAL MEDICAL CENTER: 4 (0.1%)
+    - ST JOSEPH MEDICAL CENTER: 4 (0.1%)
+
+  Column: Address
+  Unique values: 5352
+  Top 5 most frequent values:
+    - 100 HOSPITAL DRIVE: 7 (0.1%)
+    - 200 HOSPITAL DRIVE: 4 (0.1%)
+    - ONE HOSPITAL DRIVE: 3 (0.1%)
+    - 1 MEDICAL CENTER DRIVE: 3 (0.1%)
+    - 100 MEDICAL CENTER DRIVE: 3 (0.1%)
+
+  Column: City/Town
+  Unique values: 3030
+  Top 5 most frequent values:
+    - CHICAGO: 35 (0.7%)
+    - HOUSTON: 30 (0.6%)
+    - PHILADELPHIA: 23 (0.4%)
+    - COLUMBUS: 23 (0.4%)
+    - PHOENIX: 22 (0.4%)
+
+  Column: State
+  Unique values: 56
+  Top 5 most frequent values:
+    - TX: 456 (8.5%)
+    - CA: 379 (7.0%)
+    - FL: 221 (4.1%)
+    - IL: 195 (3.6%)
+    - OH: 194 (3.6%)
+
+>>> 6. Duplicate Records Check
+
+Total duplicate rows: 0
+✅ No duplicate rows found!
+
+>>> 7. Sample Records (First 5 Rows)
+
+  Facility ID                    Facility Name                     Address City/Town State  ZIP Code County/Parish Telephone Number         Hospital Type                           Hospital Ownership Emergency Services Meets criteria for birthing friendly designation Hospital overall rating  Hospital overall rating footnote MORT Group Measure Count Count of Facility MORT Measures Count of MORT Measures Better Count of MORT Measures No Different Count of MORT Measures Worse  MORT Group Footnote Safety Group Measure Count Count of Facility Safety Measures Count of Safety Measures Better Count of Safety Measures No Different Count of Safety Measures Worse  Safety Group Footnote READM Group Measure Count Count of Facility READM Measures Count of READM Measures Better Count of READM Measures No Different Count of READM Measures Worse  READM Group Footnote Pt Exp Group Measure Count Count of Facility Pt Exp Measures  Pt Exp Group Footnote TE Group Measure Count Count of Facility TE Measures  TE Group Footnote
+0      010001  SOUTHEAST HEALTH MEDICAL CENTER      1108 ROSS CLARK CIRCLE    DOTHAN    AL     36301       HOUSTON   (334) 793-8701  Acute Care Hospitals  Government - Hospital District or Authority                Yes                                                Y                       4                               NaN                        7                               7                             0                                   7                            0                  NaN                          8                                 7                               3                                     4                              0                    NaN                        11                               11                              0                                   11                             0                   NaN                          8                                 8                    NaN                     12                            11                NaN
+1      010005         MARSHALL MEDICAL CENTERS  2505 U S HIGHWAY 431 NORTH      BOAZ    AL     35957      MARSHALL   (256) 593-8310  Acute Care Hospitals  Government - Hospital District or Authority                Yes                                              NaN                       3                               NaN                        7                               6                             0                                   5                            1                  NaN                          8                                 7                               0                                     7                              0                    NaN                        11                                9                              0                                    8                             1                   NaN                          8                                 8                    NaN                     12                            12                NaN
+2      010006     NORTH ALABAMA MEDICAL CENTER         1701 VETERANS DRIVE  FLORENCE    AL     35630    LAUDERDALE   (256) 768-8400  Acute Care Hospitals                                  Proprietary                Yes                                                Y                       2                               NaN                        7                               7                             0                                   5                            2                  NaN                          8                                 8                               3                                     5                              0                    NaN                        11                                9                              0                                    8                             1                   NaN                          8                                 8                    NaN                     12                            10                NaN
+3      010007         MIZELL MEMORIAL HOSPITAL               702 N MAIN ST       OPP    AL     36467     COVINGTON   (334) 493-3541  Acute Care Hospitals               Voluntary non-profit - Private                Yes                                              NaN                       1                               NaN                        7                               3                             0                                   2                            1                  NaN                          8                                 3                               0                                     3                              0                    NaN                        11                                7                              0                                    7                             0                   NaN                          8                                 8                    NaN                     12                             7                NaN
+4      010008      CRENSHAW COMMUNITY HOSPITAL         101 HOSPITAL CIRCLE   LUVERNE    AL     36049      CRENSHAW   (334) 335-3374  Acute Care Hospitals                                  Proprietary                Yes                                              NaN           Not Available                              16.0                        7                               1                             0                                   1                            0                  NaN                          8                     Not Available                   Not Available                         Not Available                  Not Available                    5.0                        11                                2                              0                                    2                             0                   NaN                          8                     Not Available                    5.0                     12                             6                NaN
+
+====================================================================================================
+
+
+====================================================================================================
+  PART 3: COMPLIANCE DOCUMENTS ANALYSIS
+====================================================================================================
+
+Found 9 PDF files
+
+
+====================================================================================================
+  ANALYZING PDF: clm104c01.pdf
+====================================================================================================
+
+📄 Total Pages: 325
+
+
+>>> First Page Content (First 1000 characters)
+
+ Medicare Claims Processing Manual  
+Chapter 1 - General Billing Requirements  
+ 
+Table of Contents  
+(Rev. 13287, Issued: 06- 25-25) 
+ 
+  
+Transmittals for Chapter 1  
+ 
+01 - Foreword  
+01.1 -  Remittance Advice Coding Used in this Manual  
+02 - Formats for Submitting Claims to Medicare  
+02.1 -  Electronic Submission Requirements  
+02.1.1 -  HIPAA Standards for Claims  
+02.1.2 -  Where to Purchase HIPAA Standard Implementation Guides  
+02.2 -  Paper Claims  
+02.2.1 -  Paper Formats for Institutional Claims  
+02.2.2 -  Paper Formats for Professional and Supplier Claims  
+02.3 -  Remittance Advices  
+10 - Jurisdiction for Claims  
+10.1 -  A/B MACs (Part B) and DME MACs Jurisdiction of Requests for Payment  
+10.1.1 -  Payment Jurisdictions Among A/B MACs (B) for Services Paid 
+Under the Physician Fee Schedule and Anesthesia Services  
+10.1.1.1 -  Claims Processing Instructions for Payment Jurisdiction  
+10.1.1.2 -  Payment Jurisdiction for Services Subject to the Anti -Markup 
+Payment L
+
+[... content truncated ...]
+
+
+>>> Key Terms Analysis
+
+✅ Found key terms: HIPAA, Medicare, Claims
+
+====================================================================================================
+
+
+====================================================================================================
+  ANALYZING PDF: clm104c04.pdf
+====================================================================================================
+
+📄 Total Pages: 313
+
+
+>>> First Page Content (First 1000 characters)
+
+ 
+Medicare Claims Processing Manual  
+Chapter 4 - Part B Hospital  
+(Including Inpatient Hospital Part B and OPPS) 
+ 
+Table of Contents  
+(Rev. 12979; Issued : 11-22-24) 
+ 
+ 
+ 
+Transmittals for Chapter 4  
+ 
+10 - Hospital Outpatient Prospective Payment System (OPPS)  
+10.1 - Background  
+10.1.1 - Payment Status Indicators  
+10.2 - APC Payment Groups 
+10.2.1 - Composite APCs  
+10.2.2 - Cardiac Resynchronization Therapy  
+10.2.3 - Comprehensive APCs  
+ 10.2.4. - Reporting for Certain Outpatient Department Services (That Are 
+Similar to Therapy Services) (“Non -Therapy Outpatient Department 
+Services”) and Are Adjunctive to Comprehensive APC Procedures  
+10.3 - Calculation of APC Payment Rates  
+10.4 - Packaging  
+10.4.1 - Combinations of Packaged Services of Different Types That are Furnished on the Same Claim  
+10.5 - Discounting 
+10.6 - Payment Adjustments  
+10.6.1 - Payment Adjustment for  Rural  Sole Community Hospitals  
+10.6.2 - Payment Adjustment for Failure to Meet the Hospital O
+
+[... content truncated ...]
+
+
+>>> Key Terms Analysis
+
+✅ Found key terms: Medicare, Claims
+
+====================================================================================================
+
+
+====================================================================================================
+  ANALYZING PDF: clm104c16.pdf
+====================================================================================================
+
+📄 Total Pages: 82
+
+
+>>> First Page Content (First 1000 characters)
+
+Medicare Claims Processing Manual  
+Chapter 16 - Laboratory Services  
+ 
+Table of Contents  
+(Rev.  12443; Issued: 01-04-24) 
+ 
+ 
+Transmittals for Chapter 16  
+10 - Background 
+10.1 - Definitions  
+10.2 - General Explanation of Payment  
+20 - Calculation of Payment Rates - Clinical Laboratory Test Fee Schedules  
+20.1 - Initial Development of Laboratory Fee Schedules  
+20.2 - Annual Fee Schedule Updates  
+ 20.3 Clinical Laboratory Fee Schedule Based on Protecting Access to Medicare  
+            Act (PAMA) of 2014  
+30 - Special Payment Considerations  
+30.1 - Mandatory Assignment for Laboratory Tests  
+30.1.1 - Rural Health Clinics  
+30.2 - Deductible and Coinsurance Application for Laboratory Tests  
+30.3 - Method of Payment for Clinical Laboratory Tests - Place of Service Variation  
+30.4 - Payment for Review of Laboratory Test Results by Physician  
+40 - Billing for Clinical Laboratory Tests  
+40.1 - Laboratories Billing for Referred Tests  
+40.1.1 - Claims Information and Claims F
+
+[... content truncated ...]
+
+
+>>> Key Terms Analysis
+
+✅ Found key terms: Medicare, Claims
+
+====================================================================================================
+
+
+📋 Additional 6 PDF files available but not analyzed in detail:
+  - clm104c18_0.pdf
+  - clm104c23.pdf
+  - clm104c29.pdf
+  - clm104c32.pdf
+  - clm104c34_0.pdf
+  - privacysummary.pdf
+
+====================================================================================================
+  SUMMARY OF FINDINGS
+====================================================================================================
+
+             Dataset                                   File                              Rows Columns                                                                                           Key Finding
+         Claims Data   MUP_PHY_R25_P05_V20_D23_Prov_Svc.csv 9,660,647 (analyzed 1,000 sample)      28 CMS-formatted column names with underscores. Contains provider NPI, HCPCS codes, and payment amounts.
+    Operational Data     Complications_and_Deaths-State.csv                             1,120      10                                                  Contains 10 columns with healthcare quality metrics.
+    Operational Data Timely_and_Effective_Care-Hospital.csv                    1,000 (sample)      16                                                  Contains 16 columns with healthcare quality metrics.
+    Operational Data       Hospital_General_Information.csv                             5,381      38                                                  Contains 38 columns with healthcare quality metrics.
+Compliance Documents                            9 PDF files                               N/A     N/A       Medicare Claims Processing Manuals and HIPAA Privacy documentation. Text extraction successful.
+
+
+
+----------------------------------------------------------------------------------------------------
+  KEY OBSERVATIONS & RECOMMENDATIONS
+----------------------------------------------------------------------------------------------------
+
+  1. COLUMN NAMING: CMS data uses abbreviated column names (e.g., 'Rndrng_NPI', 'HCPCS_Cd'). ETL will need to create standardized column mappings.
+  2. DATA VOLUME: Claims data contains 9.6M+ records. Consider using chunked processing or sampling strategies for development.
+  3. MISSING VALUES: Multiple columns have missing values. Need to establish rules for handling nulls (impute vs. drop).
+  4. FACILITY IDs: Operational data uses 'Facility ID' while claims use 'NPI'. Need to establish join keys for cross-dataset analysis.
+  5. PDF COMPLIANCE: All compliance PDFs are machine-readable and can be processed for RAG/LLM applications.
+  6. DATA QUALITY: Some operational datasets show 'Not Available' as string values - these need to be converted to proper nulls.
+  7. CATEGORICAL ENCODING: State codes, provider types, and measure IDs use various encoding schemes that need standardization.
+  8. NUMERIC PRECISION: Payment amounts and charges have high precision - verify if this is needed or can be rounded.
+
+====================================================================================================
+  EDA COMPLETE - Ready for data cleaning and transformation!
+====================================================================================================
+

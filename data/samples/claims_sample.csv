@@ -1,0 +1,3 @@
+claim_id,patient_id,provider_id,claim_amount,claim_date
+1001,P001,PR001,4500.00,2023-01-15
+1002,P002,PR002,3200.00,2023-01-20

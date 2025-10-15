@@ -1,0 +1,3 @@
+facility_id,metric,date,value
+H001,bed_occupancy_rate,2023-01-31,0.85
+H002,average_length_of_stay,2023-01-31,4.2

@@ -1,0 +1,68 @@
+# Core Data Science and ML
+pandas
+numpy
+scikit-learn
+lightgbm
+xgboost
+statsmodels
+mlflow
+dvc
+
+# Feature Engineering & SQL
+sqlalchemy
+psycopg2-binary    # For PostgreSQL
+duckdb
+
+# Data Validation
+great_expectations
+pandera
+
+# Data I/O
+openpyxl           # Excel file read/write, if needed
+
+# PDF/Text Handling for Compliance Policies
+PyPDF2
+pdfminer.six
+
+# Vector DB, LLM, and RAG (for compliance copilot)
+chromadb
+langchain
+langchain-community
+langchain-openai
+pypdf
+sentence-transformers
+
+# FastAPI Backend and Schema
+fastapi
+uvicorn[standard]
+pydantic
+
+# Streamlit for Dashboards
+streamlit
+
+# Explainability
+shap
+scikit-plot
+
+# Monitoring/Observability
+loguru
+structlog
+
+# Utilities
+python-dotenv
+
+# Testing
+pytest
+pytest-cov
+pytest-asyncio
+httpx
+
+# Optional (for orchestration/MLOps)
+apache-airflow      # or prefect
+
+# Optional (for plotting/visualization)
+matplotlib
+seaborn
+
+# For Azure deployment (as needed)
+azure-storage-blob

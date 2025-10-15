@@ -1,0 +1,5 @@
+Summary: Ensure HIPAA compliance by encrypting PHI at rest and in transit.
+Action Items:
+1. Review access control policies quarterly.
+2. Document incident response procedures.
+3. Train staff on privacy best practices annually.

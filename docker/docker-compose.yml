@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    image: aimedguard-api:latest
+    container_name: aimedguard-api
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    volumes:
+      - ./models:/app/models
+      - ./rag/vectorstore:/app/rag/vectorstore
+      - ./logs:/app/logs
+    networks:
+      - aimedguard-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
+    image: aimedguard-ui:latest
+    container_name: aimedguard-ui
+    ports:
+      - "8501:8501"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    volumes:
+      - ./models:/app/models
+      - ./rag/vectorstore:/app/rag/vectorstore
+      - ./eda:/app/eda
+      - ./logs:/app/logs
+    networks:
+      - aimedguard-network
+    depends_on:
+      - api
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8501/healthz')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  aimedguard-network:
+    driver: bridge
+

@@ -1,0 +1,5 @@
+{
+  "fraud_model": "models/fraud_baseline.joblib",
+  "ops_model": "models/ops_forecast.joblib",
+  "feature_importances_csv": "models/fraud_feature_importances.csv"
+}
