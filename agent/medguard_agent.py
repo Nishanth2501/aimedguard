@@ -34,10 +34,17 @@ class LocalAgent:
         query_lower = query.lower()
 
         # Fraud detection - check for numerical inputs first
-        if any(
-            word in query_lower
-            for word in ["pay_ratio", "svc_per_bene", "total_beneficiaries"]
-        ) and any(word in query_lower for word in ["fraud", "risk"]) and not any(word in query_lower for word in ["business risk", "hospital", "unusual service patterns"]):
+        if (
+            any(
+                word in query_lower
+                for word in ["pay_ratio", "svc_per_bene", "total_beneficiaries"]
+            )
+            and any(word in query_lower for word in ["fraud", "risk"])
+            and not any(
+                word in query_lower
+                for word in ["business risk", "hospital", "unusual service patterns"]
+            )
+        ):
             try:
                 # Extract numerical values from query
                 import re
@@ -56,15 +63,30 @@ class LocalAgent:
                 return {"output": f"Error in fraud prediction: {str(e)}"}
 
         # Fraud methodology questions
-        elif any(word in query_lower for word in ["methodology", "explain", "how does", "algorithms", "accurate", "accuracy", "machine learning", "models"]) and ("fraud" in query_lower or "aimedguard" in query_lower or "ai medguard" in query_lower):
+        elif any(
+            word in query_lower
+            for word in [
+                "methodology",
+                "explain",
+                "how does",
+                "algorithms",
+                "accurate",
+                "accuracy",
+                "machine learning",
+                "models",
+            ]
+        ) and (
+            "fraud" in query_lower
+            or "aimedguard" in query_lower
+            or "ai medguard" in query_lower
+        ):
             return {
                 "output": "**AI MedGuard Fraud Detection Methodology**\n\n**Machine Learning Approach:**\n• **Algorithm**: Random Forest and XGBoost ensemble models\n• **Training Data**: 9.6M Medicare claims with provider-level features\n• **Accuracy**: 87% on validation set\n• **Features**: pay_ratio, svc_per_bene, total_beneficiaries, distinct HCPCS codes\n\n**Risk Scoring System:**\n• **Score 0**: Low Risk (86.88% of providers)\n• **Score 1**: Medium Risk (12.34% of providers) \n• **Score 2**: High Risk (0.76% of providers)\n• **Score 3**: Critical Risk (0.02% of providers)\n\n**Key Indicators:**\n• **Pay Ratio**: Payment to charge ratio (suspicious if very low)\n• **Service Utilization**: Services per beneficiary (unusual patterns)\n• **Volume Analysis**: Total services and distinct procedure codes\n• **Provider Patterns**: Individual vs organizational billing behavior\n\n**For specific risk assessment, provide numerical metrics: pay_ratio, svc_per_bene, total_beneficiaries**"
             }
 
         # General fraud questions
         elif any(
-            word in query_lower
-            for word in ["fraud", "fraudulent", "billing patterns"]
+            word in query_lower for word in ["fraud", "fraudulent", "billing patterns"]
         ):
             import os
 
@@ -105,8 +127,8 @@ class LocalAgent:
         # Anomaly detection
         elif any(
             word in query_lower
-            for word in ["anomaly", "outlier", "unusual", "detect anomalies"]
-        ):
+            for word in ["anomaly", "outlier", "detect anomalies"]
+        ) and not any(word in query_lower for word in ["business risk", "hospital", "service patterns"]):
             # Check if query has numerical inputs
             import re
 
@@ -289,10 +311,21 @@ def _create_local_agent() -> Optional["LocalAgent"]:
 
                 # Route queries to appropriate tools based on keywords
                 # Fraud detection - check for numerical inputs first
-                if any(
-                    word in query
-                    for word in ["pay_ratio", "svc_per_bene", "total_beneficiaries"]
-                ) and any(word in query for word in ["fraud", "risk"]) and not any(word in query for word in ["business risk", "hospital", "unusual service patterns"]):
+                if (
+                    any(
+                        word in query
+                        for word in ["pay_ratio", "svc_per_bene", "total_beneficiaries"]
+                    )
+                    and any(word in query for word in ["fraud", "risk"])
+                    and not any(
+                        word in query
+                        for word in [
+                            "business risk",
+                            "hospital",
+                            "unusual service patterns",
+                        ]
+                    )
+                ):
                     # Extract numbers from query
                     import re
 
@@ -313,7 +346,21 @@ def _create_local_agent() -> Optional["LocalAgent"]:
                             pass
 
                 # Fraud methodology questions
-                elif any(word in query for word in ["methodology", "explain", "how does", "algorithms", "accurate", "accuracy", "machine learning", "models"]) and ("fraud" in query or "aimedguard" in query or "ai medguard" in query):
+                elif any(
+                    word in query
+                    for word in [
+                        "methodology",
+                        "explain",
+                        "how does",
+                        "algorithms",
+                        "accurate",
+                        "accuracy",
+                        "machine learning",
+                        "models",
+                    ]
+                ) and (
+                    "fraud" in query or "aimedguard" in query or "ai medguard" in query
+                ):
                     return {
                         "output": "**AI MedGuard Fraud Detection Methodology**\n\n**Machine Learning Approach:**\n• **Algorithm**: Random Forest and XGBoost ensemble models\n• **Training Data**: 9.6M Medicare claims with provider-level features\n• **Accuracy**: 87% on validation set\n• **Features**: pay_ratio, svc_per_bene, total_beneficiaries, distinct HCPCS codes\n\n**Risk Scoring System:**\n• **Score 0**: Low Risk (86.88% of providers)\n• **Score 1**: Medium Risk (12.34% of providers) \n• **Score 2**: High Risk (0.76% of providers)\n• **Score 3**: Critical Risk (0.02% of providers)\n\n**Key Indicators:**\n• **Pay Ratio**: Payment to charge ratio (suspicious if very low)\n• **Service Utilization**: Services per beneficiary (unusual patterns)\n• **Volume Analysis**: Total services and distinct procedure codes\n• **Provider Patterns**: Individual vs organizational billing behavior\n\n**For specific risk assessment, provide numerical metrics: pay_ratio, svc_per_bene, total_beneficiaries**"
                     }
@@ -415,8 +462,8 @@ def _create_local_agent() -> Optional["LocalAgent"]:
 
                 elif any(
                     word in query
-                    for word in ["anomaly", "outlier", "unusual", "detect anomalies"]
-                ):
+                    for word in ["anomaly", "outlier", "detect anomalies"]
+                ) and not any(word in query for word in ["business risk", "hospital", "service patterns"]):
                     import re
 
                     numbers = re.findall(r"[\d.]+", query)
@@ -490,7 +537,15 @@ def _create_local_agent() -> Optional["LocalAgent"]:
                         "healthcare",
                         "medical",
                     ]
-                ) and not any(word in query for word in ["business risk", "hospital", "pay_ratio", "service patterns"]):
+                ) and not any(
+                    word in query
+                    for word in [
+                        "business risk",
+                        "hospital",
+                        "pay_ratio",
+                        "service patterns",
+                    ]
+                ):
                     # Use OpenAI fallback for general questions
                     import os
 
