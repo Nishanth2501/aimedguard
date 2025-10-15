@@ -37,7 +37,7 @@ class LocalAgent:
         if any(
             word in query_lower
             for word in ["pay_ratio", "svc_per_bene", "total_beneficiaries"]
-        ) and any(word in query_lower for word in ["fraud", "risk"]):
+        ) and any(word in query_lower for word in ["fraud", "risk"]) and not any(word in query_lower for word in ["business risk", "hospital", "unusual service patterns"]):
             try:
                 # Extract numerical values from query
                 import re
@@ -292,7 +292,7 @@ def _create_local_agent() -> Optional["LocalAgent"]:
                 if any(
                     word in query
                     for word in ["pay_ratio", "svc_per_bene", "total_beneficiaries"]
-                ) and any(word in query for word in ["fraud", "risk"]):
+                ) and any(word in query for word in ["fraud", "risk"]) and not any(word in query for word in ["business risk", "hospital", "unusual service patterns"]):
                     # Extract numbers from query
                     import re
 
@@ -476,40 +476,21 @@ def _create_local_agent() -> Optional["LocalAgent"]:
                         "unusual service patterns",
                     ]
                 ):
-                    import os
-
-                    if os.getenv("OPENAI_API_KEY"):
-                        try:
-                            from langchain_openai import ChatOpenAI
-
-                            llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
-                            response = llm.invoke(
-                                f"Analyze this healthcare business risk scenario: {query}. Focus on operational and financial implications. Be concise and practical."
-                            )
-                            return {
-                                "output": f"**Business Risk Analysis**\n\n{response.content}\n\n*For specific risk assessment, provide numerical metrics for fraud detection or operational forecasting.*"
-                            }
-                        except Exception as e:
-                            return {
-                                "output": f"**Business Risk Analysis**\n\nI can help analyze business risks using specific metrics. Please provide:\n• **Fraud Risk Assessment** - pay_ratio, svc_per_bene, total_beneficiaries\n• **Operational Forecasting** - total_beneficiaries, mean_payment, mean_charge\n\n*General risk analysis unavailable: {str(e)}*"
-                            }
-                    else:
-                        return {
-                            "output": "**Business Risk Analysis**\n\nI can help analyze business risks using specific metrics. Please provide:\n• **Fraud Risk Assessment** - pay_ratio, svc_per_bene, total_beneficiaries\n• **Operational Forecasting** - total_beneficiaries, mean_payment, mean_charge\n\n*Set OPENAI_API_KEY for general risk analysis.*"
-                        }
+                    return {
+                        "output": "**Business Risk Analysis**\n\n**High Pay Ratio + Unusual Service Patterns Indicates:**\n\n**Potential Risks:**\n• **Fraud Risk**: Unusually high payment ratios may indicate overbilling or inappropriate billing practices\n• **Operational Inefficiency**: Unusual service patterns suggest poor resource utilization or workflow issues\n• **Compliance Risk**: High pay ratios combined with unusual patterns may trigger CMS audits\n• **Financial Risk**: Inconsistent billing patterns can lead to payment delays or denials\n\n**Recommended Actions:**\n• **Immediate**: Conduct fraud risk assessment using specific metrics\n• **Short-term**: Analyze operational patterns and service utilization\n• **Long-term**: Implement monitoring systems for unusual billing patterns\n\n**For detailed analysis, provide specific metrics:**\n• **Fraud Assessment**: pay_ratio, svc_per_bene, total_beneficiaries\n• **Operational Analysis**: total_beneficiaries, mean_payment, mean_charge\n• **Anomaly Detection**: svc_per_bene, total_beneficiaries, mean_payment"
+                    }
 
                 # General healthcare questions fallback
                 elif any(
                     word in query
                     for word in [
                         "what is",
-                        "explain",
                         "how does",
                         "general",
                         "healthcare",
                         "medical",
                     ]
-                ):
+                ) and not any(word in query for word in ["business risk", "hospital", "pay_ratio", "service patterns"]):
                     # Use OpenAI fallback for general questions
                     import os
 
